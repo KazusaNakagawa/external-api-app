@@ -59,7 +59,6 @@ class InstagramAPI:
         """Request to the Instagram Graph API.
         - recent_media
         """
-        # リクエストURL
         url = (
             "https://graph.facebook.com/v18.0/"
             + f"{ig_hash_tag_id}/recent_media"
@@ -70,16 +69,14 @@ class InstagramAPI:
             + f"&user_id={BUSINESS_ACCOUNT_ID}&access_token={ACCESS_TOKEN}"
         )
 
-        # リクエストヘッダー
         headers = {
             "Content-Type": "application/json",
         }
         # リクエスト
         response = requests.get(url, headers=headers)
         logger.info({"response code": response.status_code})
-        # レスポンスをjsonに変換
         res = response.json()
-        # 実行関数名を表示
+
         if response.status_code == 200:
             return res
         else:
@@ -104,10 +101,10 @@ class InstagramAPI:
         response = requests.get(url, headers=headers)
         logger.info({"response code": response.status_code})
 
-        # data key で取得
         res = response.json()
         if response.status_code == 200:
             logger.debug(res)
+            # data key で取得
             return res["business_discovery"]["media"]
         else:
             logger.error({"msg": res["error"]["message"].split("access_token=")[0]})
