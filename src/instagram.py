@@ -14,7 +14,6 @@ logger = _logger.get_logger()
 
 load_dotenv()
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
-AFTER = os.environ.get("AFTER")
 BUSINESS_ACCOUNT_ID = os.environ.get("BUSINESS_ACCOUNT_ID")
 
 
@@ -70,7 +69,6 @@ class InstagramAPI:
             + "&transport=cors"
             + f"&user_id={BUSINESS_ACCOUNT_ID}&access_token={ACCESS_TOKEN}"
         )
-        # url += f"&after={AFTER}"
 
         # リクエストヘッダー
         headers = {
