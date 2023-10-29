@@ -28,11 +28,26 @@ class InstagramAPI:
         query: str = "bluebottle",
         business_discovery_username: str = "bluebottle",
     ):
+        """Instagram API.
+        - ig_hashtag_id
+        - recent_media
+        - business_discovery
+
+        Args:
+            limit (int, optional): [description]. Defaults to 50.
+            query (str, optional): [description]. Defaults to "bluebottle".
+            business_discovery_username (str, optional): [description]. Defaults to "bluebottle".
+
+            Examples:
+                >>> from src.instagram import InstagramAPI
+                >>> instagram = InstagramAPI(limit=50, query="bluebottle", business_discovery_username="bluebottle")
+                >>> instagram.run()
+        """
         self.limit = limit
         self.query = query
         self.business_discovery_username = business_discovery_username
 
-    def search_ig_hashtag_id(self):
+    def search_ig_hashtag_id(self) -> dict:
         """Request to the Instagram Graph API.
         - ig_hashtag_id
         """
@@ -46,16 +61,20 @@ class InstagramAPI:
             "Content-Type": "application/json",
         }
         response = requests.get(url, headers=headers)
-        logger.info(response.status_code)
         res = response.json()
-        res = {
-            "query": self.query,
-            "id": res["data"][0]["id"],
-        }
-        logger.info(res)
-        return res
 
-    def search_recent_media(self, ig_hash_tag_id: str):
+        if response.status_code == 200:
+            res = {
+                "query": self.query,
+                "id": res["data"][0]["id"],
+            }
+            logger.info(res)
+            return res
+        else:
+            logger.error({"msg": res})
+            return {}
+
+    def search_recent_media(self, ig_hash_tag_id: str) -> dict:
         """Request to the Instagram Graph API.
         - recent_media
         """
@@ -80,10 +99,10 @@ class InstagramAPI:
         if response.status_code == 200:
             return res
         else:
-            logger.error({"msg": res["error"]["message"].split("access_token=")[0]})
-            return False
+            logger.error({"msg": res})
+            return {}
 
-    def search_business_discovery(self):
+    def search_business_discovery(self) -> dict:
         """Request to the Instagram Graph API.
         - business_discovery
         """
@@ -107,10 +126,10 @@ class InstagramAPI:
             # data key で取得
             return res["business_discovery"]["media"]
         else:
-            logger.error({"msg": res["error"]["message"].split("access_token=")[0]})
-            return False
+            logger.error({"msg": res})
+            return {}
 
-    def count(self, res: dict):
+    def count(self, res: dict) -> bool:
         """Count the number of posts."""
         # 投稿数をカウントする
         if not res:
@@ -120,7 +139,7 @@ class InstagramAPI:
         logger.info(f"投稿数: {count}")
         return True
 
-    def get_media_url(self, res: dict):
+    def get_media_url(self, res: dict) -> None:
         """Get media_url."""
         # media_url を取得する
         for article in res["data"]:
@@ -132,7 +151,7 @@ class InstagramAPI:
         for article in res["data"]:
             logger.info(article["caption"])
 
-    def save_json(self, key_name, res: dict):
+    def save_json(self, key_name, res: dict) -> None:
         """Save json file."""
 
         # ディレクトリがなければ作成する
@@ -156,7 +175,7 @@ class InstagramAPI:
 
         return res
 
-    def save_csv(self, key_name, res: dict):
+    def save_csv(self, key_name, res: dict) -> None:
         """Save csv file."""
         with open(
             f"{_DATA_DIR}/response_{key_name}_limit{self.limit}_{_DATE_FORMAT}.csv",
@@ -188,28 +207,35 @@ class InstagramAPI:
                 f.write(f"{article['media_url']}," if "media_url" in article else ",")
                 f.write(f"{article['permalink']}\n")
 
-    def get_recent_media(self, res: dict):
+    def get_recent_media(self, res: dict) -> None:
         """Get recent media."""
+        if not res:
+            logger.info("Not ig_hashtag_id")
+            return None
+
         res = self.search_recent_media(ig_hash_tag_id=res["id"])
         self.save_json(key_name=self.query, res=res)
-        # レスポンスを読み込む
         res = self.read_json(key_name=self.query)
         # 投稿数をカウントする
         if self.count(res):
             self.save_csv(key_name=self.query, res=res)
 
-    def get_business_discovery(self):
+    def get_business_discovery(self) -> None:
         """Get business discovery."""
         key_name = self.business_discovery_username + "_business"
         res = self.search_business_discovery()
+
+        if not res:
+            logger.info("Not business_discovery")
+            return None
+
         self.save_json(key_name=key_name, res=res)
-        # レスポンスを読み込む
         res = self.read_json(key_name=key_name)
         # 投稿数をカウントする
         if self.count(res):
             self.save_csv(key_name=key_name, res=res)
 
-    def run(self):
+    def run(self) -> None:
         """API: 20回 5%
 
         単純に, 100% には、 20 * 20 = 400 回のリクエストで上限に達する.
@@ -221,9 +247,13 @@ class InstagramAPI:
         上限:
         レート制限は40分後に解除されます。
         """
-        # ig_hashtag_id を取得する
-        res = self.search_ig_hashtag_id()
-        self.get_recent_media(res)
+        try:
+            # ig_hashtag_id を取得する
+            res = self.search_ig_hashtag_id()
+            self.get_recent_media(res)
 
-        # business_discovery を取得する
-        self.get_business_discovery()
+            # business_discovery を取得する
+            self.get_business_discovery()
+        except Exception as e:
+            logger.error(e)
+            logger.error("Instagram API Error")
