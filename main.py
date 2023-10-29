@@ -27,7 +27,9 @@ def main():
     else:
         query: str = sys.argv[2]
         limit: int = int(sys.argv[4])
-        instagram = InstagramAPI(limit=limit, query=query)
+        instagram = InstagramAPI(
+            limit=limit, query=query, business_discovery_username=query
+        )
         instagram.run()
 
 
