@@ -129,27 +129,29 @@ class InstagramAPI:
             logger.error({"msg": res})
             return {}
 
-    def count(self, res: dict) -> bool:
-        """Count the number of posts."""
-        # 投稿数をカウントする
-        if not res:
-            logger.info("投稿がありません")
-            return False
-        count = len(res["data"])
-        logger.info(f"投稿数: {count}")
-        return True
 
-    def get_media_url(self, res: dict) -> None:
-        """Get media_url."""
-        # media_url を取得する
-        for article in res["data"]:
-            logger.info(article["media_url"])
+class Instagram(InstagramAPI):
 
-    def get_caption(self, res: dict):
-        """Get caption."""
-        # caption を取得する
-        for article in res["data"]:
-            logger.info(article["caption"])
+    """Instagram API.
+    - ig_hashtag_id
+    - recent_media
+    - business_discovery
+
+    Args:
+        InstagramAPI ([type]): [description]
+    """
+
+    def __init__(
+        self,
+        limit: int = 50,
+        query: str = "bluebottle",
+        business_discovery_username: str = "bluebottle",
+    ):
+        super().__init__(
+            limit=limit,
+            query=query,
+            business_discovery_username=business_discovery_username,
+        )
 
     def save_json(self, key_name, res: dict) -> None:
         """Save json file."""
@@ -206,6 +208,16 @@ class InstagramAPI:
                 # media_ur1 はある場合のみ
                 f.write(f"{article['media_url']}," if "media_url" in article else ",")
                 f.write(f"{article['permalink']}\n")
+
+    def count(self, res: dict) -> bool:
+        """Count the number of posts."""
+        # 投稿数をカウントする
+        if not res:
+            logger.info("投稿がありません")
+            return False
+        count = len(res["data"])
+        logger.info(f"投稿数: {count}")
+        return True
 
     def get_recent_media(self, res: dict) -> None:
         """Get recent media."""

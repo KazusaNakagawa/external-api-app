@@ -1,5 +1,5 @@
 import sys
-from src.instagram import InstagramAPI
+from src.instagram import Instagram
 from src.utils.logger import Logger
 
 _logger = Logger(__file__.split("/")[-1].replace(".py", ""))
@@ -27,7 +27,7 @@ def main():
     else:
         query: str = sys.argv[2]
         limit: int = int(sys.argv[4])
-        instagram = InstagramAPI(
+        instagram = Instagram(
             limit=limit, query=query, business_discovery_username=query
         )
         instagram.run()
