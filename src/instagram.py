@@ -179,8 +179,12 @@ class Instagram(InstagramAPI):
 
     def save_csv(self, key_name, res: dict) -> None:
         """Save csv file."""
+        csv_file = (
+            f"{_DATA_DIR}/response_{key_name}_limit{self.limit}_{_DATE_FORMAT}.csv"
+        )
+        logger.info({"save file": csv_file})
         with open(
-            f"{_DATA_DIR}/response_{key_name}_limit{self.limit}_{_DATE_FORMAT}.csv",
+            csv_file,
             "w",
             encoding="utf-8",
         ) as f:
@@ -208,6 +212,7 @@ class Instagram(InstagramAPI):
                 # media_ur1 はある場合のみ
                 f.write(f"{article['media_url']}," if "media_url" in article else ",")
                 f.write(f"{article['permalink']}\n")
+        logger.info({"save done": csv_file})
 
     def count(self, res: dict) -> bool:
         """Count the number of posts."""
