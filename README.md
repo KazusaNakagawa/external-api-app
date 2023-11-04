@@ -1,18 +1,49 @@
 ## external-api-app
 
 ### Description
+
 Script to retrieve the content of a post via the Instagram Graph API.
 
 ### Assumption
+
 1. you have obtained an access token from the [Instagram Platform](https://developers.facebook.com/docs/instagram?locale=en_US)
 
-### Environment
+### Usage (Docker)
+
+**Execution Procedure**
+
+1. `.env` file
+
+   ```bash
+   cp .env.example .env
+   vi .env
+   # add your access token and business account id
+   ACCESS_TOKEN={this is your access token}
+   BUSINESS_ACCOUNT_ID={this is your business account id}
+   ```
+
+2. Build the image
+
+   ```bash
+   docker-compose up -d --build
+   ```
+
+3. Run the main script
+
+   ```bash
+   docker-compose exec app python main.py -query bluebottle -limit 50
+   ```
+
+### Usage (virtual environment)
+
+**Environment**
+
 1. Mac M1
 2. virtual environment
 3. Python 3.9 series
 
+**Execution Procedure**
 
-### Usage
 1. `.env` file
 
    ```bash
@@ -39,8 +70,8 @@ Script to retrieve the content of a post via the Instagram Graph API.
 4. Run the main script
 
    ```bash
-    python main.py -query bluebottle -limit 50
-    ```
+   python main.py -query bluebottle -limit 50
+   ```
 
 5. Check the results
 
@@ -57,6 +88,7 @@ Script to retrieve the content of a post via the Instagram Graph API.
     ```
 
 ## Reference
+
 1. [Instagram Platform](https://developers.facebook.com/docs/instagram?locale=en_US)
 2. [Instagram Graph API](https://developers.facebook.com/docs/instagram-api?locale=en_US)
 3. [Instagram Graph API Reference](https://developers.facebook.com/docs/instagram-api/reference?locale=en_US)
@@ -65,4 +97,3 @@ Script to retrieve the content of a post via the Instagram Graph API.
 
 ## Document
 1. [Instagram Graph API で投稿データを取得する](https://zenn.dev/kazusa_nakagawa/articles/article10_instagram_api)
-
