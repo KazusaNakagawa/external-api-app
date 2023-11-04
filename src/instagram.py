@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 if __name__ == "__main__":
     sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+from src.utils.db import Database
 from src.utils.logger import Logger
 
 _logger = Logger(__file__.split("/")[-1].replace(".py", ""))
@@ -237,6 +238,25 @@ class Instagram(InstagramAPI):
         if self.count(res):
             self.save_csv(key_name=self.query, res=res)
 
+    def get_hashtag_media(self) -> None:
+        """Get hashtag media."""
+
+        try:
+            db = Database("instagram.db")
+            ig_hashtag_id = db.select_ig_hashtag_id(name=self.query)
+            if ig_hashtag_id:
+                logger.info("ig_hashtag_id is already exists")
+                self.get_recent_media(res={"id": ig_hashtag_id})
+            else:
+                res = self.search_ig_hashtag_id()
+                db.insert_ig_hashtag_id(name=res["query"], ig_hashtag_id=res["id"])
+                self.get_recent_media(res)
+        except Exception as e:
+            logger.error(e)
+            logger.error("Instagram API Error")
+        finally:
+            db.close()
+
     def get_business_discovery(self) -> None:
         """Get business discovery."""
         key_name = self.business_discovery_username + "_business"
@@ -265,9 +285,8 @@ class Instagram(InstagramAPI):
         レート制限は40分後に解除されます。
         """
         try:
-            # ig_hashtag_id を取得する
-            res = self.search_ig_hashtag_id()
-            self.get_recent_media(res)
+            # ig_hashtag_id でハッシュタグ投稿を取得する
+            self.get_hashtag_media()
 
             # business_discovery を取得する
             self.get_business_discovery()
