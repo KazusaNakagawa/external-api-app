@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  app:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: external_api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - TZ=Asia/Tokyo
+    container_name: external_api
+    tty: true
+    stdin_open: true
