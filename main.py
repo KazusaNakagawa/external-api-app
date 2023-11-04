@@ -18,12 +18,12 @@ def main():
       2. obtain data
         $ python main.py -query bluebottle -limit 50
     """
+    logger.info("start main")
     if len(sys.argv) == 1:
         _logger.gzip(DATA_DIR)
     elif len(sys.argv) < 5:
         logger.error("missing argument")
         logger.error("Example: $ python main.py -query bluebottle -limit 50")
-        sys.exit()
     else:
         query: str = sys.argv[2]
         limit: int = int(sys.argv[4])
@@ -31,6 +31,7 @@ def main():
             limit=limit, query=query, business_discovery_username=query
         )
         instagram.run()
+    logger.info("end main")
 
 
 if __name__ == "__main__":
