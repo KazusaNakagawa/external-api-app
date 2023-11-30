@@ -290,6 +290,12 @@ class Instagram(InstagramAPI):
 
             # business_discovery を取得する
             self.get_business_discovery()
+            logger.info(
+                {
+                    "msg": "Instagram API Done",
+                    "query": self.query,
+                }
+            )
         except Exception as e:
             logger.error(e)
             logger.error("Instagram API Error")
