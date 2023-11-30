@@ -26,18 +26,16 @@ from src.utils.logger import Logger
 _logger = Logger(__file__.split("/")[-1].replace(".py", ""))
 logger = _logger.get_logger()
 
-_DATA_DIR = "db/instagram"
+_DATA_DIR = "db/"
 
 
 class Database:
     def __init__(self, db_name: str = None):
         """sqlite3 database connection."""
         self.db_name = db_name if db_name else "instagram.db"
-
-        if not os.path.exists(_DATA_DIR):
-            os.makedirs(_DATA_DIR)
-            self.create_table()
+        if not os.path.exists(f"{_DATA_DIR}/{self.db_name}"):
             self.connect()
+            self.create_table()
         else:
             self.connect()
 

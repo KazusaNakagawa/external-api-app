@@ -187,7 +187,7 @@ class Instagram(InstagramAPI):
         with open(
             csv_file,
             "w",
-            encoding="utf-8",
+            encoding="utf-8-sig",
         ) as f:
             f.write(
                 "id,media_type,comments_count,like_count,caption,timestamp,media_url,permalink\n"
