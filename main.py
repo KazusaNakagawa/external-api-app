@@ -5,8 +5,6 @@ from src.utils.logger import Logger
 _logger = Logger()
 logger = _logger.get_logger()
 
-DATA_DIR = "data/instagram"
-
 
 def main():
     """実行コマンド
@@ -20,7 +18,7 @@ def main():
     """
     logger.info("start main")
     if len(sys.argv) == 1:
-        _logger.gzip(DATA_DIR)
+        _logger.gzip()
     elif len(sys.argv) < 5:
         logger.error("missing argument")
         logger.error("Example: $ python main.py -query bluebottle -limit 50")
