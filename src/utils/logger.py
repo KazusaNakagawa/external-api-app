@@ -10,7 +10,7 @@ class Logger:
     def __init__(self, name: str):
         self.name = name
 
-    def get_logger(self, log_dir="./logs"):
+    def get_logger(self, log_dir="./logs", log_name="app"):
         """Get logger."""
         if not os.path.exists(log_dir):
             os.mkdir(log_dir)
@@ -22,7 +22,7 @@ class Logger:
         )
 
         handler = TimedRotatingFileHandler(
-            filename=f"{log_dir}/{self.name}.log",
+            filename=f"{log_dir}/{log_name}.log",
             when="D",
             interval=1,
             backupCount=7,
