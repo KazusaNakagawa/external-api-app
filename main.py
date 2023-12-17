@@ -2,7 +2,7 @@ import sys
 from src.instagram import Instagram
 from src.utils.logger import Logger
 
-_logger = Logger(__file__.split("/")[-1].replace(".py", ""))
+_logger = Logger()
 logger = _logger.get_logger()
 
 DATA_DIR = "data/instagram"

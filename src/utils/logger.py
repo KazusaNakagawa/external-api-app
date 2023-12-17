@@ -1,5 +1,6 @@
 import glob
 import gzip
+import inspect
 import logging
 import os
 import re
@@ -7,8 +8,17 @@ from logging.handlers import TimedRotatingFileHandler
 
 
 class Logger:
-    def __init__(self, name: str):
-        self.name = name
+    def __init__(self):
+        """Initialize.
+
+        Examples:
+            >>> from src.utils.logger import Logger
+            >>> logger = Logger().get_logger()
+            >>> logger.info("test")
+            2021-08-31 00:00:00,000 - INFO - logger(1) - test
+
+        """
+        self.name = inspect.stack()[1][1].split("/")[-1].replace(".py", "")
 
     def get_logger(self, log_dir="./logs", log_name="app"):
         """Get logger."""

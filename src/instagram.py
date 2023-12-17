@@ -10,8 +10,7 @@ if __name__ == "__main__":
 from src.utils.db import Database
 from src.utils.logger import Logger
 
-_logger = Logger(__file__.split("/")[-1].replace(".py", ""))
-logger = _logger.get_logger()
+logger = Logger().get_logger()
 
 load_dotenv()
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
