@@ -97,3 +97,52 @@ Script to retrieve the content of a post via the Instagram Graph API.
 
 ## Document
 1. [Instagram Graph API で投稿データを取得する](https://zenn.dev/kazusa_nakagawa/articles/article10_instagram_api)
+
+
+## Flow Chart
+
+### Main
+
+   ```mermaid
+   graph TB
+      Start(Start) --> CheckArgs{Check command line arguments}
+      CheckArgs -->|One argument| Gzip
+      CheckArgs -->|Less than 5 arguments| MissingArg(Missing argument error)
+      CheckArgs -->|5 or more arguments| RunInstagram
+      Gzip --> End(End)
+      MissingArg --> End
+      RunInstagram --> End
+   ````
+
+### InstagramAPI Class
+
+   ```mermaid
+   graph TB
+      A[InstagramAPI クラスの初期化] -->|search_ig_hashtag_id| B[Instagram Graph API にリクエスト]
+      B --> C[レスポンスの確認]
+      C -->|ステータスコードが200| D[レスポンスのログ出力と返却]
+      C -->|それ以外| E[エラーログの出力と空の辞書の返却]
+      A -->|search_recent_media| F[Instagram Graph API にリクエスト]
+      F --> G[レスポンスの確認]
+      G -->|ステータスコードが200| H[レスポンスの返却]
+      G -->|それ以外| I[エラーログの出力と空の辞書の返却]
+      A -->|search_business_discovery| J[Instagram Graph API にリクエスト]
+      J --> K[レスポンスの確認]
+      K -->|ステータスコードが200| L[レスポンスの返却]
+      K -->|それ以外| M[エラーログの出力と空の辞書の返却]
+   ```
+
+### Instagram Class
+
+   ```mermaid
+   graph TB
+      N[Instagram クラスの初期化] --> O[InstagramAPI クラスの初期化]
+      N -->|save_json| P[JSON ファイルの保存]
+      N -->|read_json| Q[JSON ファイルの読み込み]
+      N -->|save_csv| R[CSV ファイルの保存]
+      N -->|count| S[投稿数のカウント]
+      N -->|get_recent_media| T[最近のメディアの取得]
+      N -->|get_hashtag_media| U[ハッシュタグメディアの取得]
+      N -->|get_business_discovery| V[ビジネスディスカバリーの取得]
+      N -->|run| W[全てのメソッドの実行]
+   ```
