@@ -87,18 +87,6 @@ Script to retrieve the content of a post via the Instagram Graph API.
         └── ...
     ```
 
-## Reference
-
-1. [Instagram Platform](https://developers.facebook.com/docs/instagram?locale=en_US)
-2. [Instagram Graph API](https://developers.facebook.com/docs/instagram-api?locale=en_US)
-3. [Instagram Graph API Reference](https://developers.facebook.com/docs/instagram-api/reference?locale=en_US)
-4. [InstagramAPIの始め方！Instagram Graph APIのセットアップ方法を解説](https://tabiato.co.jp/biz/blog/instagram-graph-api-setup/)
-5. [Instagram graph APIのアクセストークンを使ってWordPressサイトへInstagramを埋め込む方法](https://calieto.com/calietoblog/embedding-method-instagram-wordpress/#)
-
-## Document
-1. [Instagram Graph API で投稿データを取得する](https://zenn.dev/kazusa_nakagawa/articles/article10_instagram_api)
-
-
 ## Flow Chart
 
 ### Main
@@ -146,3 +134,14 @@ Script to retrieve the content of a post via the Instagram Graph API.
       N -->|get_business_discovery| V[ビジネスディスカバリーの取得]
       N -->|run| W[全てのメソッドの実行]
    ```
+
+## Reference
+
+1. [Instagram Platform](https://developers.facebook.com/docs/instagram?locale=en_US)
+2. [Instagram Graph API](https://developers.facebook.com/docs/instagram-api?locale=en_US)
+3. [Instagram Graph API Reference](https://developers.facebook.com/docs/instagram-api/reference?locale=en_US)
+4. [InstagramAPIの始め方！Instagram Graph APIのセットアップ方法を解説](https://tabiato.co.jp/biz/blog/instagram-graph-api-setup/)
+5. [Instagram graph APIのアクセストークンを使ってWordPressサイトへInstagramを埋め込む方法](https://calieto.com/calietoblog/embedding-method-instagram-wordpress/#)
+
+## Document
+1. [Instagram Graph API で投稿データを取得する](https://zenn.dev/kazusa_nakagawa/articles/article10_instagram_api)
